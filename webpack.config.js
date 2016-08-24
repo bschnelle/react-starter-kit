@@ -9,6 +9,7 @@ const webpackConfig = {
   devServer: {
     // option changes
     contentBase: './dist',
+    historyApiFallback: true,
     host: config.host,
     port: config.port
   },
@@ -103,6 +104,7 @@ if (config.production) {
   });
   // add HMR
   webpackConfig.entry.app.unshift(
+    'react-hot-loader/patch',
     `webpack-dev-server/client?http://${config.host}:${config.port}`,
     'webpack/hot/only-dev-server'
   );
