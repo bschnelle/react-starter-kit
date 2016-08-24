@@ -4,6 +4,7 @@
   "description": "React ecosystem starter kit",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint src test",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,5 +26,13 @@
   "bugs": {
     "url": "https://github.com/bschnelle/react-starter-kit/issues"
   },
-  "homepage": "https://github.com/bschnelle/react-starter-kit#readme"
+  "homepage": "https://github.com/bschnelle/react-starter-kit#readme",
+  "devDependencies": {
+    "babel-eslint": "^6.1.2",
+    "eslint": "^3.3.1",
+    "eslint-config-airbnb": "^10.0.1",
+    "eslint-plugin-import": "^1.14.0",
+    "eslint-plugin-jsx-a11y": "^2.1.0",
+    "eslint-plugin-react": "^6.1.2"
+  }
 }
