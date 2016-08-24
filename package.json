@@ -1,0 +1,29 @@
+{
+  "name": "react-starter-kit",
+  "version": "0.0.1",
+  "description": "React ecosystem starter kit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bschnelle/react-starter-kit.git"
+  },
+  "keywords": [
+    "react",
+    "redux",
+    "webpack",
+    "babel",
+    "mocha",
+    "chai",
+    "sinon",
+    "enzyme"
+  ],
+  "author": "Benjamin Schnelle <benjamin.schnelle@gmail.com> (https://github.com/bschnelle)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bschnelle/react-starter-kit/issues"
+  },
+  "homepage": "https://github.com/bschnelle/react-starter-kit#readme"
+}
