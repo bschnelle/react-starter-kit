@@ -1,22 +1,25 @@
 const autoprefixer = require('autoprefixer');
-// const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
+const config = require('./config');
 
-module.exports = {
+const webpackConfig = {
   devServer: {
-    hot: true,
+    // option changes
+    contentBase: './dist',
+    host: config.host,
+    port: config.port
   },
 
-  devtool: 'source-map',
+  // remove devtool
 
   entry: {
     app: [
-      'webpack-dev-server/client?http://localhost:8080',
-      'webpack/hot/only-dev-server',
+      // remove lines here
       './src/index.js'
-    ],
+    ]
   },
 
   module: {
@@ -25,17 +28,9 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel'
-      },
-      {
-        test: /\.(css|scss)$/,
-        loaders: [
-          'style',
-          'css?modules&sourceMap&importLoaders=1&minimize',
-          'postcss',
-          'sass'
-        ]
-      },
-    ],
+      }
+      // remove css/scss
+    ]
   },
 
   output: {
@@ -44,15 +39,77 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+    // remove HotModuleReplacementPlugin
 
     new HtmlWebpackPlugin({
       template: './src/index.html',
-      inject: 'body'
+      inject: 'body',
+      // new config
+      minify: {
+        collapseWhitespace: true
+      }
     })
-
-    // new webpack.optimize.UglifyJsPlugin(),
   ],
 
   postcss: [autoprefixer]
 };
+
+// new section to apply config based on our environment (dev or prod)
+if (config.production) {
+  // add css loader with ExtractTextPlugin
+  webpackConfig.module.loaders.push({
+    test: /\.(css|scss)$/,
+    loader: ExtractTextPlugin.extract([
+      'css?modules&importLoaders=1&minimize',
+      'postcss',
+      'sass'
+    ])
+  });
+  // add optimizations
+  webpackConfig.plugins.push(
+    new ExtractTextPlugin('styles-[contenthash].css'),
+    new webpack.optimize.DedupePlugin(), // remove duplicate code
+    new webpack.optimize.OccurrenceOrderPlugin(), // webpack optimization
+    new webpack.optimize.UglifyJsPlugin({
+      comments: false, // remove comments
+      compress: {
+        warnings: false // disable command line warnings
+      }
+    }),
+    // create global constants at compile time...
+    // this enables the minification step to remove
+    // entire environment specific code blocks (React.js)
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production')
+      }
+    })
+  );
+} else {
+  // devServer options
+  webpackConfig.devServer.debug = true;
+  webpackConfig.devServer.hot = true;
+  // source maps
+  webpackConfig.devtool = 'source-map';
+  // add css loader
+  webpackConfig.module.loaders.push({
+    test: /\.(css|scss)$/,
+    loaders: [
+      'style',
+      'css?modules&sourceMap&importLoaders=1',
+      'postcss',
+      'sass'
+    ]
+  });
+  // add HMR
+  webpackConfig.entry.app.unshift(
+    `webpack-dev-server/client?http://${config.host}:${config.port}`,
+    'webpack/hot/only-dev-server'
+  );
+  webpackConfig.plugins.push(
+    new webpack.HotModuleReplacementPlugin()
+  );
+}
+
+// export our config variable
+module.exports = webpackConfig;
