@@ -12,7 +12,7 @@ CounterContainer.propTypes = {
   increment: PropTypes.func.isRequired,
 };
 
-export const stateToProps = (state) => ({ count: state.counter.count });
+export const stateToProps = (state) => ({ count: state.counter.get('count') });
 export const dispatchToProps = { increment };
 
 export default connect(stateToProps, dispatchToProps)(CounterContainer);

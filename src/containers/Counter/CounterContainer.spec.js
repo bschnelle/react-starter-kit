@@ -1,6 +1,7 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
+import { Map as iMap } from 'immutable';
 import { CounterContainer, dispatchToProps, stateToProps } from './CounterContainer';
 import Counter from '../../components/Counter/Counter';
 
@@ -16,8 +17,8 @@ describe('CounterContainer', () => {
 
   describe('stateToProps', () => {
     it('maps state.counter.count to props.count', () => {
-      const state = { counter: { count: 5 } };
-      expect(stateToProps(state).count).to.equal(state.counter.count);
+      const state = { counter: iMap({ count: 5 }) };
+      expect(stateToProps(state).count).to.equal(state.counter.get('count'));
     });
   });
 

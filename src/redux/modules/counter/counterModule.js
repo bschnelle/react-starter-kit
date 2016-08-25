@@ -1,10 +1,12 @@
+import { Map as iMap } from 'immutable';
+
 // Actions
 const INCREMENT = 'counter/INCREMENT';
 
 // Reducer
-export default (state = { count: 10 }, action) => {
+export default (state = iMap({ count: 10 }), action) => {
   if (action.type === INCREMENT) {
-    return { count: state.count + action.increment };
+    return state.update('count', (count) => count + action.increment);
   }
   return state;
 };
