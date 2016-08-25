@@ -1,11 +1,14 @@
 {
   "parser": "babel-eslint",
   "env": {
-    "browser": true
+    "browser": true,
+    "mocha": true // remove when eslint adds glob matching
   },
   "extends" : "airbnb",
   "rules": {
     "comma-dangle": 0,
+    "import/no-extraneous-dependencies": 0, // remove when eslint adds glob matching
+    "no-unused-expressions": 0, // remove when eslint adds glob matching
     "react/jsx-filename-extension": 0
   }
 }
