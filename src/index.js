@@ -1,14 +1,21 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { AppContainer } from 'react-hot-loader'; // eslint-disable-line
+import { Provider } from 'react-redux';
+import { AppContainer } from 'react-hot-loader';
 import { browserHistory, Router } from 'react-router';
+import { syncHistoryWithStore } from 'react-router-redux';
+import store from './redux/store';
 import routes from './routes';
 
 const MOUNT_NODE = document.getElementById('root');
+const history = syncHistoryWithStore(browserHistory, store);
+
 const App = (
-  <Router history={browserHistory}>
-    {routes}
-  </Router>
+  <Provider store={store}>
+    <Router history={history}>
+      {routes}
+    </Router>
+  </Provider>
 );
 
 render(App, MOUNT_NODE);
