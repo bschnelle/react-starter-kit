@@ -7,18 +7,14 @@ const config = require('./config');
 
 const webpackConfig = {
   devServer: {
-    // option changes
     contentBase: './dist',
     historyApiFallback: true,
     host: config.host,
     port: config.port
   },
 
-  // remove devtool
-
   entry: {
     app: [
-      // remove lines here
       './src/index.js'
     ]
   },
@@ -30,7 +26,6 @@ const webpackConfig = {
         exclude: /node_modules/,
         loader: 'babel'
       }
-      // remove css/scss
     ]
   },
 
@@ -40,12 +35,11 @@ const webpackConfig = {
   },
 
   plugins: [
-    // remove HotModuleReplacementPlugin
+    new webpack.DefinePlugin({ __DEV__: !config.production }),
 
     new HtmlWebpackPlugin({
       template: './src/index.html',
       inject: 'body',
-      // new config
       minify: {
         collapseWhitespace: true
       }
@@ -55,7 +49,6 @@ const webpackConfig = {
   postcss: [autoprefixer]
 };
 
-// new section to apply config based on our environment (dev or prod)
 if (config.production) {
   // add css loader with ExtractTextPlugin
   webpackConfig.module.loaders.push({
@@ -69,12 +62,12 @@ if (config.production) {
   // add optimizations
   webpackConfig.plugins.push(
     new ExtractTextPlugin('styles-[contenthash].css'),
-    new webpack.optimize.DedupePlugin(), // remove duplicate code
-    new webpack.optimize.OccurrenceOrderPlugin(), // webpack optimization
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
-      comments: false, // remove comments
+      comments: false,
       compress: {
-        warnings: false // disable command line warnings
+        warnings: false
       }
     }),
     // create global constants at compile time...
@@ -113,5 +106,4 @@ if (config.production) {
   );
 }
 
-// export our config variable
 module.exports = webpackConfig;
