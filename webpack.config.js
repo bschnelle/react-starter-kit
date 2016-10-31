@@ -30,8 +30,8 @@ const webpackConfig = {
   },
 
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name]-[hash].js'
+    filename: '[name]-[hash].js',
+    path: path.resolve(__dirname, 'dist')
   },
 
   plugins: [
@@ -46,7 +46,14 @@ const webpackConfig = {
     })
   ],
 
-  postcss: [autoprefixer]
+  // postcss: [autoprefixer]
+
+  resolve: {
+    alias: {
+      // enable "import Component from 'src/components/Component'"
+      src: path.resolve(__dirname, 'src'),
+    }
+  }
 };
 
 if (config.production) {

@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { increment } from '../../redux/modules/counter/counterModule';
-import Counter from '../../components/Counter/Counter';
+import Counter from 'src/components/Counter/Counter';
 
 export const CounterContainer = (props) => (
   <Counter count={props.count} increment={props.increment} />
