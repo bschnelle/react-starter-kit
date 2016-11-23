@@ -1,4 +1,3 @@
-const autoprefixer = require('autoprefixer');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -14,13 +13,11 @@ const webpackConfig = {
   },
 
   entry: {
-    app: [
-      './src/index.js'
-    ]
+    app: './src/index.js'
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -46,8 +43,6 @@ const webpackConfig = {
     })
   ],
 
-  // postcss: [autoprefixer]
-
   resolve: {
     alias: {
       // enable "import Component from 'src/components/Component'"
@@ -58,9 +53,9 @@ const webpackConfig = {
 
 if (config.production) {
   // add css loader with ExtractTextPlugin
-  webpackConfig.module.loaders.push({
+  webpackConfig.module.rules.push({
     test: /\.(css|scss)$/,
-    loader: ExtractTextPlugin.extract([
+    loader: ExtractTextPlugin.extract([ // TODO "use" doesn't work with extract https://github.com/webpack/extract-text-webpack-plugin/issues/275
       'css?modules&importLoaders=1&minimize',
       'postcss',
       'sass'
@@ -93,12 +88,12 @@ if (config.production) {
   // source maps
   webpackConfig.devtool = 'source-map';
   // add css loader
-  webpackConfig.module.loaders.push({
+  webpackConfig.module.rules.push({
     test: /\.(css|scss)$/,
-    loaders: [
+    use: [
       'style',
       'css?modules&sourceMap&importLoaders=1',
-      'postcss',
+      'postcss', // TODO https://github.com/postcss/postcss-loader/issues/128, currently using postcss.config.js
       'sass'
     ]
   });
